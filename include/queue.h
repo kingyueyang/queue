@@ -1,5 +1,5 @@
-#if !defined(_REVBOT_QUEUE_H)
-#define _REVBOT_QUEUE_H
+#ifndef _QUEUE_H_
+#define _QUEUE_H_
 
 #include <pthread.h>
 

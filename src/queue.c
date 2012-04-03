@@ -51,35 +51,32 @@ QUEUE_ITEM *Get_Queue_Item(QUEUE *queue)
 	pthread_mutex_lock(&(queue->read_mutex));
 	pthread_mutex_lock(&(queue->modify_mutex));
 	
-  if(!(qi = pqi = queue->items)) {
-      pthread_mutex_unlock(&(queue->modify_mutex));
-      return (QUEUE_ITEM *)NULL;
-  } 
+  /*if(!(qi = pqi = queue->items)) {*/
+      /*return (QUEUE_ITEM *)NULL;*/
+  /*}*/
 
-	qi = pqi = queue->items;
-	while ((qi->next))
-	{
-		pqi = qi;
-		qi = qi->next;
-	}
-	
-	pqi->next = NULL;
-	if (queue->numitems == 1)
-		queue->items = NULL;
-	
-	queue->numitems--;
-	
-	if (queue->numitems > 0)
-		pthread_mutex_unlock(&(queue->read_mutex));
-	
-	pthread_mutex_unlock(&(queue->modify_mutex));
-	
-	return qi;
+  while ((qi->next))
+  {
+      pqi = qi;
+      qi = qi->next;
+  }
+
+  pqi->next = NULL;
+  if (queue->numitems == 1)
+      queue->items = NULL;
+
+  queue->numitems--;
+
+  if (queue->numitems > 0)
+      pthread_mutex_unlock(&(queue->read_mutex));
+
+  pthread_mutex_unlock(&(queue->modify_mutex));
+
+  return qi;
 }
 
 void Free_Queue_Item(QUEUE_ITEM *queue_item)
 {
-	free(queue_item->action);
-	free(queue_item);
+    free(queue_item->action);
+    free(queue_item);
 }
-
